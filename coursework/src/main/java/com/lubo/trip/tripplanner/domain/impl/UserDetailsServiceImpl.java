@@ -1,7 +1,8 @@
-package com.lubo.trip.tripplanner.domain;
+package com.lubo.trip.tripplanner.domain.impl;
 
 
 import com.lubo.trip.tripplanner.dao.UsersRepository;
+import com.lubo.trip.tripplanner.domain.UsersService;
 import com.lubo.trip.tripplanner.exception.NonexisitngEntityException;
 import com.lubo.trip.tripplanner.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
