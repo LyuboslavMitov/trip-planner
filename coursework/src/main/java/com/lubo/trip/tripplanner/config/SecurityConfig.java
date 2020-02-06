@@ -3,7 +3,6 @@ package com.lubo.trip.tripplanner.config;
 import com.lubo.trip.tripplanner.domain.UsersService;
 import com.lubo.trip.tripplanner.security.JwtAuthenticationFilter;
 import com.lubo.trip.tripplanner.security.JwtAuthorizationFilter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +20,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@Slf4j
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -31,11 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .cors().and()
+        http.csrf().disable().cors().and()
                 .authorizeRequests()
                 //TODO:Change this
-                .antMatchers("/api/public").permitAll()
+//                .antMatchers("/api/public").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -50,7 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .logoutUrl("/api/logout")
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.ACCEPTED));
-        ;
     }
 
     @Override
@@ -58,8 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(username -> usersService.findByUsername(username));
 
     }
-
-    //TODO: Uncomment Course config
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
