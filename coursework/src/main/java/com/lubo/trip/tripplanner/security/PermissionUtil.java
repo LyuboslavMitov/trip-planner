@@ -1,5 +1,6 @@
 package com.lubo.trip.tripplanner.security;
 
+import com.lubo.trip.tripplanner.domain.ExpensesService;
 import com.lubo.trip.tripplanner.domain.TripsService;
 import com.lubo.trip.tripplanner.domain.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,8 @@ import java.util.Objects;
 public class PermissionUtil {
     @Autowired
     TripsService tripsService;
-
+    @Autowired
+    ExpensesService expensesService;
     @Autowired
     UsersService usersService;
 
@@ -25,5 +27,9 @@ public class PermissionUtil {
 
     public boolean isCurrentUser(String userId, String principal) {
         return Objects.equals(usersService.findById(userId), usersService.findByUsername(principal));
+    }
+
+    public boolean isExpenseOwner(String expenseId, String principal) {
+        return Objects.equals(expensesService.findById(expenseId).getUsername(), principal);
     }
 }

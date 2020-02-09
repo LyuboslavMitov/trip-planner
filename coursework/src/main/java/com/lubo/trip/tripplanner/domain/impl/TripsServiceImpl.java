@@ -1,15 +1,18 @@
 package com.lubo.trip.tripplanner.domain.impl;
 
 import com.lubo.trip.tripplanner.dao.TripsRepository;
+import com.lubo.trip.tripplanner.dao.UsersRepository;
 import com.lubo.trip.tripplanner.domain.TripsService;
 import com.lubo.trip.tripplanner.exception.NonexisitngEntityException;
 import com.lubo.trip.tripplanner.model.Trip;
+import com.lubo.trip.tripplanner.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -17,8 +20,27 @@ public class TripsServiceImpl implements TripsService {
     @Autowired
     private TripsRepository repo;
 
+    @Autowired
+    private UsersRepository usersRepository;
+
     public List<Trip> findAllTripsOwnedBy(String userId) {
         return repo.findAllByOwnerId(userId);
+    }
+
+    @Override
+    public List<Trip> findAllTripsForParticipant(String userId) {
+        return repo.findAllByParticipantsIdContaining(userId);
+    }
+
+    @Override
+    public List<User> findAllParticipantsForTrip(String tripId) {
+        Trip trip = repo.findById(tripId).orElseThrow(() -> new NonexisitngEntityException(
+                String.format("Trip with ID='%s' does not exist.", tripId)));
+        return trip.getParticipantsId().stream().map(t -> {
+            return usersRepository.findById(t).orElseThrow(() -> new NonexisitngEntityException("Participant not found"));
+        }).collect(Collectors.toList());
+
+
     }
 
     public Trip findById(String tripId) {

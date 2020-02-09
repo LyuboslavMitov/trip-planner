@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Document(collection = "expenses")
@@ -20,8 +21,13 @@ public class Expense {
     private String name;
     @NonNull
     @NotNull
+    private BigDecimal amount;
+
+    @NonNull
+    @NotNull
     private LocalDateTime dateOfExpense;
     private String description;
+
 
     //Relations
     @NonNull

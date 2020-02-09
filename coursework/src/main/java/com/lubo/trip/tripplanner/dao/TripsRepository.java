@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface TripsRepository extends MongoRepository<Trip, String> {
     List<Trip> findAllByOwnerId(String userId);
+    List<Trip> findAllByParticipantsIdContaining(String userId);
+
 }

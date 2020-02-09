@@ -17,6 +17,8 @@ public class ExpensesServiceImpl implements ExpensesService {
     @Autowired
     private ExpensesRepository repo;
 
+
+    //TODO: Modify expense -> ExpenseResponse so that you can diminish which are  modifiable by user (isOwnedByCurrentUser:true)
     @Override
     public List<Expense> findAllExpensesForTrip(String tripId) {
         return repo.findAllByTripId(tripId);

@@ -24,6 +24,8 @@ public class Trip {
     @NonNull
     @NotNull
     private String destination;
+
+    //TODO: Json format on those??
     @NonNull
     @NotNull
     private LocalDateTime startDate;
