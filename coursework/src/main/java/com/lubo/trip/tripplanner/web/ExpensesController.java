@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/expenses/{tripId}")
@@ -26,8 +27,8 @@ public class ExpensesController {
 
     @GetMapping
     @IsTripParticipant
-    public List<Expense> getExpensesForTrip(@PathVariable("tripId") String tripId, Principal principal) {
-        return expensesService.findAllExpensesForTrip(tripId);
+    public Map<String,List<Expense>> getExpensesForTrip(@PathVariable("tripId") String tripId, Principal principal) {
+        return expensesService.getExpensesGroupedByUsername(tripId);
     }
 
     @GetMapping("{id}")

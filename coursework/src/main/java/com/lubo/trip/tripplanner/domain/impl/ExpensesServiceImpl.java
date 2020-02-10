@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @Slf4j
@@ -22,6 +25,11 @@ public class ExpensesServiceImpl implements ExpensesService {
     @Override
     public List<Expense> findAllExpensesForTrip(String tripId) {
         return repo.findAllByTripId(tripId);
+    }
+
+    @Override
+    public Map<String,List<Expense>> getExpensesGroupedByUsername(String tripId) {
+        return repo.findAllByTripId(tripId).stream().collect(groupingBy(Expense::getUsername));
     }
 
     @Override
