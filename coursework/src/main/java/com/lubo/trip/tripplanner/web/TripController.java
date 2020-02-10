@@ -62,9 +62,13 @@ public class TripController {
 
         String currentUserId = getPrincipalId(principal);
         trip.setOwnerId(currentUserId);
-        trip.setParticipantsId(Collections.singletonList(currentUserId));
-        Trip created = tripsService.add(trip);
+        trip.getParticipantsNames().add(principal.getName());
+        trip.setParticipantsNames(trip.getParticipantsNames());
 
+        trip.getParticipantsId().add(currentUserId);
+        trip.setParticipantsId(trip.getParticipantsId());
+
+        Trip created = tripsService.add(trip);
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest().pathSegment("{id}").build(created.getId()))
                 .body(created);
@@ -85,6 +89,7 @@ public class TripController {
     public Trip remove(@PathVariable String id) {
         return tripsService.remove(id);
     }
+
     private String getPrincipalId(Principal principal) {
         return usersService.findByUsername(principal.getName()).getId();
     }

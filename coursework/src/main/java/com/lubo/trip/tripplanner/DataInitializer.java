@@ -45,7 +45,7 @@ public class DataInitializer implements ApplicationRunner {
             usersService.add(companyUser);
 
             Trip trip = new Trip("Summer vibes", "Amsterdam", LocalDateTime.now(), LocalDateTime.now().plusDays(5),
-                    travelerUser.getId(), Collections.singletonList(travelerUser.getId()));
+                    travelerUser.getId(), Collections.singletonList(travelerUser.getUsername()),Collections.singletonList(travelerUser.getId()));
             trip = tripsRepository.save(trip);
 
             Expense expense = new Expense("Pizza", BigDecimal.valueOf(15), LocalDateTime.now(), trip.getId(), travelerUser.getUsername());

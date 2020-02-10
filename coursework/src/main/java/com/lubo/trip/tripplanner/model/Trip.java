@@ -45,6 +45,11 @@ public class Trip {
 
     @NonNull
     @NotNull
+    private List<String> participantsNames;
+
+
+    @NonNull
+    @NotNull
     private List<String> participantsId;
 
 }

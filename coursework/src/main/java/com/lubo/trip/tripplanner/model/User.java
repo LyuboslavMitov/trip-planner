@@ -38,6 +38,9 @@ public class User implements UserDetails{
     @NonNull
     private boolean isActive;
 
+    private String email;
+
+
     @Override
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
