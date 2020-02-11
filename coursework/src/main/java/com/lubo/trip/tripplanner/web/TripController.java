@@ -62,11 +62,12 @@ public class TripController {
 
         String currentUserId = getPrincipalId(principal);
         trip.setOwnerId(currentUserId);
-        trip.getParticipantsNames().add(principal.getName());
-        trip.setParticipantsNames(trip.getParticipantsNames());
-
-        trip.getParticipantsId().add(currentUserId);
-        trip.setParticipantsId(trip.getParticipantsId());
+        if(trip.getParticipantsNames()==null || trip.getParticipantsNames().size()==0){
+            trip.setParticipantsNames(Collections.singletonList(principal.getName()));
+        }
+        if(trip.getParticipantsId()==null || trip.getParticipantsId().size()==0){
+            trip.setParticipantsId(Collections.singletonList(usersService.findByUsername(principal.getName()).getId()));
+        }
 
         Trip created = tripsService.add(trip);
         return ResponseEntity.created(
