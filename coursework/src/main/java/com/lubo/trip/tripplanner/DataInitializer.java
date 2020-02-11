@@ -52,7 +52,7 @@ public class DataInitializer implements ApplicationRunner {
             expensesRepository.save(expense);
 
             ScheduleItem scheduleItem = new ScheduleItem("Get together", "Amsterdam central station",
-                    LocalDateTime.now().plusHours(3), trip.getId(), trip.getParticipantsId());
+                    LocalDateTime.now().plusHours(3), trip.getId(), trip.getParticipantsId(),trip.getParticipantsNames());
             scheduleItemsRepository.save(scheduleItem);
         }
     }

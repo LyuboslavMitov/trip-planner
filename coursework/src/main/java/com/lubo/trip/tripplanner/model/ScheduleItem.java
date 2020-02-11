@@ -39,4 +39,8 @@ public class ScheduleItem {
     @NotNull
     private List<String> participantsId;
 
+    @NonNull
+    @NotNull
+    private List<String> participantsNames;
+
 }

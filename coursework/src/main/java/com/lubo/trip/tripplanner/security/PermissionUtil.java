@@ -24,7 +24,9 @@ public class PermissionUtil {
     public boolean isTripOwner(String tripId, String principal) {
         return Objects.equals(tripsService.findById(tripId).getOwnerId(), usersService.findByUsername(principal).getId());
     }
-
+    public boolean isTripOwnerUsingParticipantNames(String tripId, String principal) {
+        return tripsService.findById(tripId).getParticipantsNames().contains(principal);
+    }
     public boolean isCurrentUser(String userId, String principal) {
         return Objects.equals(usersService.findById(userId), usersService.findByUsername(principal));
     }

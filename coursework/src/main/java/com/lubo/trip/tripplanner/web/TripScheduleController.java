@@ -5,6 +5,7 @@ import com.lubo.trip.tripplanner.domain.ScheduleItemsService;
 import com.lubo.trip.tripplanner.domain.UsersService;
 import com.lubo.trip.tripplanner.exception.InvalidEntityException;
 import com.lubo.trip.tripplanner.model.ScheduleItem;
+import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,9 @@ public class TripScheduleController {
             throw new InvalidEntityException(message);
         }
         scheduleItem.setTripId(tripId);
+        if (Collections.isEmpty(scheduleItem.getParticipantsNames())) {
+            scheduleItem.getParticipantsNames().add(principal.getName());
+        }
         ScheduleItem created = scheduleItemsService.add(scheduleItem);
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest().pathSegment("{id}").build(created.getId()))

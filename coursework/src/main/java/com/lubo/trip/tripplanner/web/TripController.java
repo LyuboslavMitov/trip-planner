@@ -76,10 +76,16 @@ public class TripController {
 
     @PutMapping("{id}")
     @IsTripOwner
-    public Trip update(@PathVariable String id, @Valid @RequestBody Trip trip) {
+    public Trip update(@PathVariable String id, @Valid @RequestBody Trip trip,Principal principal) {
         if (!id.equals(trip.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", trip.getId(), id));
+        }
+        if(trip.getParticipantsNames()==null || trip.getParticipantsNames().size()==0){
+            trip.setParticipantsNames(Collections.singletonList(principal.getName()));
+        }
+        if(trip.getParticipantsId()==null || trip.getParticipantsId().size()==0){
+            trip.setParticipantsId(Collections.singletonList(usersService.findByUsername(principal.getName()).getId()));
         }
         return tripsService.update(trip);
     }
