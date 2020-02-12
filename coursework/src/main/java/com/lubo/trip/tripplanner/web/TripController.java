@@ -36,7 +36,7 @@ public class TripController {
 
     @GetMapping("/participant")
     public List<Trip> getParticipantTrips(Principal principal) {
-        return tripsService.findAllTripsForParticipant(getPrincipalId(principal));
+        return tripsService.findAllTripsForParticipant(principal.getName());
     }
 
     @GetMapping("{tripId}/participants")

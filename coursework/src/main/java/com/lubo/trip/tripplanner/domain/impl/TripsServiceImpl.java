@@ -28,8 +28,9 @@ public class TripsServiceImpl implements TripsService {
     }
 
     @Override
-    public List<Trip> findAllTripsForParticipant(String userId) {
-        return repo.findAllByParticipantsIdContaining(userId);
+    public List<Trip> findAllTripsForParticipant(String username) {
+//        return repo.findAllByParticipantsIdContaining(userId);
+        return repo.findAllByParticipantsNamesContaining(username);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class TripsServiceImpl implements TripsService {
 //        }).collect(Collectors.toList());
         Trip trip = repo.findById(tripId).orElseThrow(() -> new NonexisitngEntityException(
                 String.format("Trip with ID='%s' does not exist.", tripId)));
-        return trip.getParticipantsNames().stream().map(t->{
+        return trip.getParticipantsNames().stream().map(t -> {
             return usersRepository.findByUsername(t).orElseThrow(() -> new NonexisitngEntityException("Participant not found"));
         }).collect(Collectors.toList());
     }
@@ -61,6 +62,7 @@ public class TripsServiceImpl implements TripsService {
             throw new NonexisitngEntityException(
                     String.format("Trip with ID='%s' does not exist.", trip.getId()));
         }
+        trip.setOwnerId(old.get().getOwnerId());
         return repo.save(trip);
     }
 
