@@ -39,7 +39,7 @@ public class ExpensesController {
 
     @PostMapping
     @IsTripParticipant
-    public ResponseEntity<Expense> addExpense(@PathVariable("tripId") String tripId, @Valid @RequestBody Expense expense, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<Expense> addExpense(@PathVariable("tripId") String tripId, @RequestBody Expense expense, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasFieldErrors()) {
             String message = bindingResult.getFieldErrors().stream()
                     .map(err -> String.format("Invalid '%s' -> '%s': %s\n",
@@ -57,11 +57,12 @@ public class ExpensesController {
 
     @PutMapping("{id}")
     @IsExpenseOwner
-    public Expense update(@PathVariable String id, @Valid @RequestBody Expense expense, Principal principal) {
+    public Expense update(@PathVariable("tripId") String tripId,@PathVariable String id, @RequestBody Expense expense, Principal principal) {
         if (!id.equals(expense.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", expense.getId(), id));
         }
+        expense.setTripId(tripId);
         expense.setUsername(principal.getName());
         return expensesService.update(expense);
     }
