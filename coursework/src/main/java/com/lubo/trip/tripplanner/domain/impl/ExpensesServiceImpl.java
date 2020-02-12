@@ -53,6 +53,7 @@ public class ExpensesServiceImpl implements ExpensesService {
             throw new NonexisitngEntityException(
                     String.format("Expense with ID='%s' does not exist.", expense.getId()));
         }
+        expense.setTripId(old.get().getTripId());
         return repo.save(expense);
     }
 

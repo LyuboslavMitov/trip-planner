@@ -32,7 +32,7 @@ public class TripScheduleController {
 
     @PostMapping
     @IsTripParticipant
-    public ResponseEntity<ScheduleItem> addScheduleItem(@PathVariable("tripId") String tripId, @Valid @RequestBody ScheduleItem scheduleItem, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<ScheduleItem> addScheduleItem(@PathVariable("tripId") String tripId, @RequestBody ScheduleItem scheduleItem, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasFieldErrors()) {
             String message = bindingResult.getFieldErrors().stream()
                     .map(err -> String.format("Invalid '%s' -> '%s': %s\n",
@@ -42,7 +42,7 @@ public class TripScheduleController {
         }
         scheduleItem.setTripId(tripId);
         if (Collections.isEmpty(scheduleItem.getParticipantsNames())) {
-            scheduleItem.getParticipantsNames().add(principal.getName());
+            scheduleItem.setParticipantsNames(java.util.Collections.singletonList(principal.getName()));
         }
         ScheduleItem created = scheduleItemsService.add(scheduleItem);
         return ResponseEntity.created(
@@ -52,17 +52,20 @@ public class TripScheduleController {
 
     @PutMapping("{id}")
     @IsTripParticipant
-    public ScheduleItem update(@PathVariable String id, @Valid @RequestBody ScheduleItem scheduleItem) {
+    public ScheduleItem update(@PathVariable("tripId") String tripId,@PathVariable String id, @RequestBody ScheduleItem scheduleItem, Principal principal) {
         if (!id.equals(scheduleItem.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", scheduleItem.getId(), id));
+        }
+        if (Collections.isEmpty(scheduleItem.getParticipantsNames())) {
+            scheduleItem.setParticipantsNames(java.util.Collections.singletonList(principal.getName()));
         }
         return scheduleItemsService.update(scheduleItem);
     }
 
     @IsTripParticipant
     @DeleteMapping("{id}")
-    public ScheduleItem remove(@PathVariable String id, Principal principal) {
+    public ScheduleItem remove(@PathVariable("tripId") String tripId,@PathVariable String id, Principal principal) {
         return scheduleItemsService.remove(id);
     }
 }

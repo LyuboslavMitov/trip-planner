@@ -5,6 +5,7 @@ import com.lubo.trip.tripplanner.domain.ScheduleItemsService;
 import com.lubo.trip.tripplanner.domain.ScheduleItemsService;
 import com.lubo.trip.tripplanner.exception.NonexisitngEntityException;
 import com.lubo.trip.tripplanner.model.ScheduleItem;
+import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,8 @@ public class ScheduleItemsServiceImpl implements ScheduleItemsService {
             throw new NonexisitngEntityException(
                     String.format("ScheduleItem with ID='%s' does not exist.", scheduleItem.getId()));
         }
+
+        scheduleItem.setTripId(old.get().getTripId());
         return repo.save(scheduleItem);
     }
 

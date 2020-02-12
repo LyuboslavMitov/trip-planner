@@ -57,11 +57,12 @@ public class ExpensesController {
 
     @PutMapping("{id}")
     @IsExpenseOwner
-    public Expense update(@PathVariable String id, @Valid @RequestBody Expense expense) {
+    public Expense update(@PathVariable String id, @Valid @RequestBody Expense expense, Principal principal) {
         if (!id.equals(expense.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", expense.getId(), id));
         }
+        expense.setUsername(principal.getName());
         return expensesService.update(expense);
     }
 

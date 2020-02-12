@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasRole('ADMIN') or @permissionUtil.isTripParticipant(#tripId,principal)")
+@PreAuthorize("hasRole('ADMIN') or @permissionUtil.isTripParticipantUsingNames(#tripId,principal)")
 public @interface IsTripParticipant {
 }
