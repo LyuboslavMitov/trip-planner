@@ -51,7 +51,7 @@ public class TripController {
     }
 
     @PostMapping
-    public ResponseEntity<Trip> addTrip(@Valid @RequestBody Trip trip, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<Trip> addTrip(@RequestBody Trip trip, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasFieldErrors()) {
             String message = bindingResult.getFieldErrors().stream()
                     .map(err -> String.format("Invalid '%s' -> '%s': %s\n",
@@ -77,7 +77,7 @@ public class TripController {
 
     @PutMapping("{id}")
     @IsTripOwner
-    public Trip update(@PathVariable String id, @Valid @RequestBody Trip trip,Principal principal) {
+    public Trip update(@PathVariable String id,@RequestBody Trip trip,Principal principal) {
         if (!id.equals(trip.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", trip.getId(), id));

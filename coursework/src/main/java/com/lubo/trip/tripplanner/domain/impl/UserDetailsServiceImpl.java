@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UsersService {
     @Override
     public User add(User user) {
         if (user.getRoles() == null || user.getRoles().trim().length() == 0) {
-            user.setRoles("ROLE_BLOGGER");
+            user.setRoles("ROLE_REGISTERED");
         }
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
